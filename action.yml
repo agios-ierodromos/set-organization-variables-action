@@ -1,13 +1,30 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Set Organization Variables Action'
+author: 'Agios Ierodromos'
+description: 'Creates or updates organization variables from a dotenv (.env) file'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
-    required: true
-    default: '1000'
+  dotenv-file:
+    description: 'The local dotenv file to be loaded (defaults to ".env")'
+    required: false
+    default: '.env'
+  url:
+    description: 'The URL to download the dotenv file to be loaded (defaults to emtpy string)'
+    required: false
+    default: ''
+  keep-file:
+    description: 'Indicates if the file should be deleted on the end of the process, or not (defaults to true)'
+    required: false
+    default: true
+  github-token:
+    description: The GitHub token used to create an authenticated client
+    default: ${{ github.token }}
+    required: false
 outputs:
-  time: # output will be available to future steps
+  time:
     description: 'The current time after waiting'
 runs:
   using: 'node16'
   main: 'dist/index.js'
+  post: 'dist/cleanup.js'
+branding:
+  icon: 'settings'
+  color: 'orange'
